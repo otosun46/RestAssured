@@ -81,4 +81,16 @@ public class ZippoTest {
                 .statusCode(200)
         ;
     }
+
+    @Test
+    public void bodyArraySizeTest() {
+        given()
+                .when()
+                .get("http://zippopotam.us/us/90210")
+                .then()
+                .log().body()
+                .body("places", hasSize(1))
+                .statusCode(200)
+        ;
+    }
 }
