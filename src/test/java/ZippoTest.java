@@ -69,4 +69,16 @@ public class ZippoTest {
                 .statusCode(200)
         ;
     }
+
+    @Test
+    public void bodyJsonPathTest3() {
+        given()
+                .when()
+                .get("http://zippopotam.us/us/90210")
+                .then()
+                .log().body()
+                .body("places[0].'place name'", equalTo("Beverly Hills"))
+                .statusCode(200)
+        ;
+    }
 }
