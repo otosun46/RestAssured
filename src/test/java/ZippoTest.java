@@ -57,4 +57,16 @@ public class ZippoTest {
                 .body("country", equalTo("United States"))
                 .statusCode(200) ;
     }
+
+    @Test
+    public void bodyJsonPathTest2() {
+        given()
+                .when()
+                .get("http://zippopotam.us/us/90210")
+                .then()
+                .log().body()
+                .body("places[0].state", equalTo("California"))
+                .statusCode(200)
+        ;
+    }
 }
