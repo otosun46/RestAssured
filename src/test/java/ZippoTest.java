@@ -1,7 +1,7 @@
 import io.restassured.http.ContentType;
 import org.testng.annotations.Test;
 
-import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 
@@ -89,6 +89,21 @@ public class ZippoTest {
                 .get("http://zippopotam.us/us/90210")
                 .then()
                 .log().body()
+                .body("places", hasSize(1))
+                .statusCode(200)
+        ;
+    }
+
+    @Test
+    public void CombiningTest() {
+        given()
+                .when()
+                .get("http://zippopotam.us/us/90210")
+                .then()
+                .log().body()
+                .body("country", equalTo("United States"))
+                .body("places[0].state", equalTo("California"))
+                .body("places[0].'place name'", equalTo("Beverly Hills"))
                 .body("places", hasSize(1))
                 .statusCode(200)
         ;
