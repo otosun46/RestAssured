@@ -1,4 +1,10 @@
+import io.restassured.builder.RequestSpecBuilder;
+import io.restassured.builder.ResponseSpecBuilder;
+import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
+import io.restassured.specification.ResponseSpecification;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.*;
@@ -6,7 +12,46 @@ import static org.hamcrest.Matchers.*;
 
 
 public class ZippoTest {
-    //initial
+    private ResponseSpecification responseSpecification;
+    private RequestSpecification requestSpecification;
+
+    @BeforeClass
+    public void setup() {
+        baseURI = "http://api.zippopotam.us";
+        requestSpecification =new RequestSpecBuilder()
+                .log(LogDetail.URI)
+                .setAccept(ContentType.JSON)
+                .build();
+
+        responseSpecification = new ResponseSpecBuilder()
+                .expectStatusCode(200)
+                .expectContentType(ContentType.JSON)
+                .log(LogDetail.BODY)
+                .build();
+    }
+    @Test
+    public void bodyArraySizeTestResponseSpecification_ResponseSpecification() { //setup() metodundaki URL yi kullaniyor .get( ) icinde http yoksa baseUri yi kullaniyor
+        given()
+                .spec(requestSpecification)
+                .when()
+                .get("/us/90210")
+                .then()
+                .body("places", hasSize(1))
+                .spec(responseSpecification)
+        ;
+    }
+    @Test
+    public void bodyArraySizeTestResponseSpecification() { //setup() metodundaki URL yi kullaniyor .get( ) icinde http yoksa baseUri yi kullaniyor
+        given()
+                .log().uri()
+                .when()
+                .get("/us/90210")
+                .then()
+                .body("places", hasSize(1))
+                .spec(responseSpecification)
+        ;
+    }
+
     @Test
     public void test() {
         given()
@@ -82,10 +127,10 @@ public class ZippoTest {
     }
 
     @Test
-    public void bodyArraySizeTest() {
+    public void bodyArraySizeTestBaseUri() { //setup() metodundaki URL yi kullaniyor .get( ) icinde http yoksa baseUri yi kullaniyor
         given()
                 .when()
-                .get("http://zippopotam.us/us/90210")
+                .get("/us/90210")
                 .then()
                 .log().body()
                 .body("places", hasSize(1))
