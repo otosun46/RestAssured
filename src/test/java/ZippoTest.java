@@ -5,7 +5,6 @@ import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 
-
 public class ZippoTest {
     //initial
     @Test
@@ -55,7 +54,7 @@ public class ZippoTest {
                 then().
                 log().body()
                 .body("country", equalTo("United States"))
-                .statusCode(200) ;
+                .statusCode(200);
     }
 
     @Test
@@ -107,5 +106,52 @@ public class ZippoTest {
                 .body("places", hasSize(1))
                 .statusCode(200)
         ;
+    }
+
+    @Test
+    public void pathParamTest() {
+        String country = "us";
+        String zipCode = "90210";
+        given()
+                .pathParam("country", country)
+                .pathParam("zipCode", zipCode)
+                .log().uri()
+                .when()
+                .get("http://zippopotam.us" + "/{country}/{zipCode}")
+                .then()
+                .log().body()
+                .body("places", hasSize(1))
+        ;
+    }
+
+    @Test
+    public void queryParamTest() {
+        int page = 10;
+
+        given()
+                .param("page", page)
+                .log().uri()
+                .when()
+                .get("http://gorest.co.in/public-api/users")
+                .then()
+                .log().body()
+                .body("meta.pagination.page", equalTo(page))
+        ;
+    }
+
+    @Test
+    public void queryParamTestCoklu() {
+
+        for (int page = 1; page < 10; page++) {
+            given()
+                    .param("page", page)
+                    .log().uri()
+                    .when()
+                    .get("http://gorest.co.in/public-api/users")
+                    .then()
+                    .log().body()
+                    .body("meta.pagination.page", equalTo(page))
+            ;
+        }
     }
 }
