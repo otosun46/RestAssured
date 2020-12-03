@@ -4,6 +4,7 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -18,7 +19,7 @@ public class ZippoTest {
     @BeforeClass
     public void setup() {
         baseURI = "http://api.zippopotam.us";
-        requestSpecification =new RequestSpecBuilder()
+        requestSpecification = new RequestSpecBuilder()
                 .log(LogDetail.URI)
                 .setAccept(ContentType.JSON)
                 .build();
@@ -29,6 +30,7 @@ public class ZippoTest {
                 .log(LogDetail.BODY)
                 .build();
     }
+
     @Test
     public void bodyArraySizeTestResponseSpecification_ResponseSpecification() { //setup() metodundaki URL yi kullaniyor .get( ) icinde http yoksa baseUri yi kullaniyor
         given()
@@ -40,6 +42,7 @@ public class ZippoTest {
                 .spec(responseSpecification)
         ;
     }
+
     @Test
     public void bodyArraySizeTestResponseSpecification() { //setup() metodundaki URL yi kullaniyor .get( ) icinde http yoksa baseUri yi kullaniyor
         given()
@@ -198,5 +201,19 @@ public class ZippoTest {
                     .body("meta.pagination.page", equalTo(page))
             ;
         }
+    }
+
+    @Test
+    public void extractingJsonPath(){
+        String extractValue=
+        given()
+                .when()
+                .get("/us/90210")
+                .then()
+                .log().body()
+                .extract().path("places[0].'place name'")
+        ;
+        System.out.println(extractValue);
+        Assert.assertEquals(extractValue,"Beverly Hills");
     }
 }
