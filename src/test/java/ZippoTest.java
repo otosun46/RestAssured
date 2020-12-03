@@ -8,6 +8,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
@@ -204,16 +207,29 @@ public class ZippoTest {
     }
 
     @Test
-    public void extractingJsonPath(){
-        String extractValue=
-        given()
-                .when()
-                .get("/us/90210")
-                .then()
-                .log().body()
-                .extract().path("places[0].'place name'")
-        ;
+    public void extractingJsonPath() {
+        String extractValue =
+                given()
+                        .when()
+                        .get("/us/90210")
+                        .then()
+                        // .log().body()
+                        .extract().path("places[0].'place name'");
         System.out.println(extractValue);
-        Assert.assertEquals(extractValue,"Beverly Hills");
+        Assert.assertEquals(extractValue, "Beverly Hills");
+    }
+
+    @Test
+    public void extractingJsonPathList() {
+
+        List<String> liste=
+                given()
+                        .when()
+                        .get("/tr/01000")
+                        .then()
+                       // .log().body()
+                        .extract().path("places.'place name'");
+        System.out.println(liste);
+        // Assert.assertEquals(extractValue,"Beverly Hills");
     }
 }
