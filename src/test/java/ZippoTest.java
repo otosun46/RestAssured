@@ -230,6 +230,6 @@ public class ZippoTest {
                        // .log().body()
                         .extract().path("places.'place name'");
         System.out.println(liste);
-        // Assert.assertEquals(extractValue,"Beverly Hills");
+         Assert.assertTrue(liste.contains("Karakuyu Köyü"));
     }
 }
