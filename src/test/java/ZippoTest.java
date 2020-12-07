@@ -7,8 +7,8 @@ import io.restassured.specification.ResponseSpecification;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import pojo.Location;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static io.restassured.RestAssured.*;
@@ -231,5 +231,21 @@ public class ZippoTest {
                         .extract().path("places.'place name'");
         System.out.println(liste);
          Assert.assertTrue(liste.contains("Karakuyu Köyü"));
+    }
+
+    @Test
+    public void extractingJsonPojo() {
+        Location location=
+                given()
+                        .when()
+                        .get("/us/90210")
+                        .then()
+                         .log().body()
+                        .extract().as(Location.class)
+                ;
+        System.out.println(location);
+        System.out.println(location.getCountry());
+        System.out.println(location.getPlaces());
+        System.out.println(location.getPlaces().get(0).getState());
     }
 }

@@ -29,6 +29,7 @@ public class Location {
     public List<Place> getPlaces() {
         return places;
     }
+
     @JsonProperty("post code")
     public void setPostcode(String postcode) {
         this.postcode = postcode;
@@ -37,6 +38,7 @@ public class Location {
     public void setCountry(String country) {
         this.country = country;
     }
+
     @JsonProperty("country abbreviation")
     public void setCountryabbreviation(String countryabbreviation) {
         this.countryabbreviation = countryabbreviation;

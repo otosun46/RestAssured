@@ -15,6 +15,7 @@ public class Place {
     public String getPlacename() {
         return placename;
     }
+
     @JsonProperty("place name")
     public void setPlacename(String placename) {
         this.placename = placename;
@@ -39,6 +40,7 @@ public class Place {
     public String getStateabbreviation() {
         return stateabbreviation;
     }
+
     @JsonProperty("state abbreviation")
     public void setStateabbreviation(String stateabbreviation) {
         this.stateabbreviation = stateabbreviation;
@@ -50,5 +52,16 @@ public class Place {
 
     public void setLatitude(String latitude) {
         this.latitude = latitude;
+    }
+
+    @Override
+    public String toString() {
+        return "Place{" +
+                "placename='" + placename + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", state='" + state + '\'' +
+                ", stateabbreviation='" + stateabbreviation + '\'' +
+                ", latitude='" + latitude + '\'' +
+                '}';
     }
 }
