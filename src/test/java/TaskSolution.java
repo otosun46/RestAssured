@@ -115,7 +115,6 @@ public class TaskSolution {
      */
     @Test
     public void task5() {
-
         given()
                 .when()
                 .get("https://jsonplaceholder.typicode.com/todos")
@@ -125,6 +124,54 @@ public class TaskSolution {
                 .contentType(ContentType.JSON)
                 .body("title[2]",equalTo("fugiat veniam minus"))
                 .body("userId[2]",equalTo(1));
+    }
+    /** Task 6
+     * create a request to https://jsonplaceholder.typicode.com/todos/2
+     * expect status 200
+     * Converting Into POJO
+     */
+    @Test
+    public void task6() {
+        given()
+                .when()
+                .get("https://jsonplaceholder.typicode.com/todos/2")
+                .then()
+                .log().body()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+               ;
+    }
+
+    /** Task 7
+     * create a request to https://jsonplaceholder.typicode.com/todos
+     * expect status 200
+     * Converting Array Into Array of POJOs
+     */
+    @Test
+    public void task7() {
+        given()
+                .when()
+                .get("https://jsonplaceholder.typicode.com/todos")
+                .then()
+                .log().body()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+        ;
+    }
+    /** Task 8
+     * create a request to https://jsonplaceholder.typicode.com/todos
+     * expect status 200
+     * Converting Array Into List of POJOs
+     */
+    @Test
+    public void task8() {
+        given()
+                .when()
+                .get("https://jsonplaceholder.typicode.com/todos")
+                .then()
+                .log().body()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
         ;
     }
 }
