@@ -10,18 +10,12 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
-import static io.restassured.RestAssured.baseURI;
-import static io.restassured.RestAssured.given;
+import static io.restassured.RestAssured.*;
+import static org.hamcrest.Matchers.*;
 
 /**
  * @Author:Otosun Tarih :07/12/2020
  */
-/** Task 1
- * create a request to https://httpstat.us/203
- * expect status 203
- * expect content type TEXT
- */
-
 
 public class TaskSolution {
     private ResponseSpecification responseSpecification;
@@ -41,7 +35,11 @@ public class TaskSolution {
                 .log(LogDetail.BODY)
                 .build();
     }
-
+    /** Task 1
+     * create a request to https://httpstat.us/203
+     * expect status 203
+     * expect content type TEXT
+     */
     @Test
     public void task1() {
                 given()
@@ -51,5 +49,23 @@ public class TaskSolution {
                          .log().body()
                         .statusCode(203)
                         .contentType(ContentType.TEXT);
+    }
+
+    /** Task 2
+     * create a request to https://httpstat.us/418
+     * expect status 418
+     * expect content type TEXT
+     * expect body to be equel to "418 I'm a teapot"
+     */
+    @Test
+    public void task2() {
+        given()
+                .when()
+                .get("/418")
+                .then()
+                .log().body()
+                .statusCode(418)
+                .contentType(ContentType.TEXT)
+                .body(equalTo("418 I'm a teapot"));
     }
 }
