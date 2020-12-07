@@ -165,13 +165,16 @@ public class TaskSolution {
      */
     @Test
     public void task8() {
+        List<String> liste=
         given()
                 .when()
                 .get("https://jsonplaceholder.typicode.com/todos")
                 .then()
-                .log().body()
+                //.log().body()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
+                .extract().path("");
+        System.out.println(liste);
         ;
     }
 }
