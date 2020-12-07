@@ -84,4 +84,22 @@ public class TaskSolution {
                 .contentType(ContentType.JSON)
                 .body("title",equalTo("quis ut nam facilis et officia qui"));
     }
+    @Test
+
+    /** Task 4
+     * create a request to https://jsonplaceholder.typicode.com/todos/2
+     *  expect status 200
+     *  expect content type JSON
+     *  expect response complated status to be false
+     */
+    public void task4() {
+        given()
+                .when()
+                .get("https://jsonplaceholder.typicode.com/todos/2")
+                .then()
+                .log().body()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("completed",equalTo(false));
+    }
 }
