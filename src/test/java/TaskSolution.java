@@ -4,11 +4,9 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.List;
 
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
@@ -67,5 +65,23 @@ public class TaskSolution {
                 .statusCode(418)
                 .contentType(ContentType.TEXT)
                 .body(equalTo("418 I'm a teapot"));
+    }
+
+    /** Task 3
+     *  create a request to https://jsonplaceholder.typicode.com/todos/2
+     *  expect status 200
+     *  expect content type JSON
+     *  expect title in response body to be "quis ut nam facilis et officia qui"
+     */
+    @Test
+    public void task3() {
+        given()
+                .when()
+                .get("https://jsonplaceholder.typicode.com/todos/2")
+                .then()
+                .log().body()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("title",equalTo("quis ut nam facilis et officia qui"));
     }
 }
