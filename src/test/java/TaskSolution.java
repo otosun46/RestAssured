@@ -8,6 +8,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 
+import java.util.List;
+
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
@@ -84,7 +86,7 @@ public class TaskSolution {
                 .contentType(ContentType.JSON)
                 .body("title",equalTo("quis ut nam facilis et officia qui"));
     }
-    @Test
+
 
     /** Task 4
      * create a request to https://jsonplaceholder.typicode.com/todos/2
@@ -92,6 +94,7 @@ public class TaskSolution {
      *  expect content type JSON
      *  expect response complated status to be false
      */
+    @Test
     public void task4() {
         given()
                 .when()
@@ -101,5 +104,27 @@ public class TaskSolution {
                 .statusCode(200)
                 .contentType(ContentType.JSON)
                 .body("completed",equalTo(false));
+    }
+    /** Task 5
+     * create a request to https://jsonplaceholder.typicode.com/todos
+     * expect status 200
+     * expect content type JSON
+     * expect third item have:
+     *      title = "fugiat veniam minus"
+     *      userId = 1
+     */
+    @Test
+    public void task5() {
+
+        given()
+                .when()
+                .get("https://jsonplaceholder.typicode.com/todos")
+                .then()
+                .log().body()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("title[2]",equalTo("fugiat veniam minus"))
+                .body("userId[2]",equalTo(1));
+        ;
     }
 }
