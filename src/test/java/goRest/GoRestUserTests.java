@@ -14,6 +14,8 @@ import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 public class GoRestUserTests {
+    int userId;
+
     @Test
     public void getUsers() {
         List<User> userList =
@@ -31,27 +33,60 @@ public class GoRestUserTests {
             System.out.println(us.toString());
         }
     }
-    int userId;
+
     @Test
     public void createUser() {
-        given()
-                .header("Authorization","Bearer 04610a7e22f479adbcf2d70d5f61babda270b70b86318c203a6e7ac1e7ce1ee3")
-                .contentType(ContentType.JSON)
-                .body("{\"name\":\"technoOr \", \"gender\":\"Male\", \"email\":\""+getRandomEmail()+"\", \"status\":\"Active\"}")
-                .when()
-                .post("https://gorest.co.in/public-api/users")
-                .then()
-                .log().body()
-                .statusCode(200)
-                .contentType(ContentType.JSON)
-                .body("code",equalTo(201))
-                .extract().jsonPath().getInt("data.id")
-                ;
+        userId =
+                given()
+                        .header("Authorization", "Bearer 04610a7e22f479adbcf2d70d5f61babda270b70b86318c203a6e7ac1e7ce1ee3")
+                        .contentType(ContentType.JSON)
+                        .body("{\"name\":\"technoOr \", \"gender\":\"Male\", \"email\":\"" + getRandomEmail() + "\", \"status\":\"Active\"}")
+                        .when()
+                        .post("https://gorest.co.in/public-api/users")
+                        .then()
+                        .log().body()
+                        .statusCode(200)
+                        .contentType(ContentType.JSON)
+                        .body("code", equalTo(201))
+                        .extract().jsonPath().getInt("data.id")
+        ;
         System.out.println(userId);
 
 
     }
-    private String getRandomEmail(){
-        return RandomStringUtils.randomAlphabetic(8)+"@gmail.com";
+
+    private String getRandomEmail() {
+        return RandomStringUtils.randomAlphabetic(8) + "@gmail.com";
+    }
+
+    @Test(dependsOnMethods = "createUser")
+    public void getUserById() {
+        given()
+                .pathParam("userId", userId)
+                .when()
+                .get("https://gorest.co.in/public-api/users/{userId}")
+                .then()
+                .statusCode(200)
+                .body("code", equalTo(200))
+                .body("data.id", equalTo(userId))
+        ;
+    }
+
+
+    @Test(dependsOnMethods = "createUser")
+    public void updateUserById() {
+        String newName = "Hasan Sahan";
+        given()
+                .header("Authorization", "Bearer 04610a7e22f479adbcf2d70d5f61babda270b70b86318c203a6e7ac1e7ce1ee3")
+                .contentType(ContentType.JSON)
+                .body("{\"name\":\""+ newName + "\"}")
+                .pathParam("userId", userId)
+                .when()
+                .put("https://gorest.co.in/public-api/users/{userId}")
+                .then()
+                .statusCode(200)
+                .body("code", equalTo(200))
+                .body("data.name", equalTo(newName))
+        ;
     }
 }
