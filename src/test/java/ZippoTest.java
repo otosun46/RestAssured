@@ -222,27 +222,26 @@ public class ZippoTest {
     @Test
     public void extractingJsonPathList() {
 
-        List<String> liste=
+        List<String> liste =
                 given()
                         .when()
                         .get("/tr/01000")
                         .then()
-                       // .log().body()
+                        // .log().body()
                         .extract().path("places.'place name'");
         System.out.println(liste);
-         Assert.assertTrue(liste.contains("Karakuyu Köyü"));
+        Assert.assertTrue(liste.contains("Karakuyu Köyü"));
     }
 
     @Test
     public void extractingJsonPojo() {
-        Location location=
+        Location location =
                 given()
                         .when()
                         .get("/us/90210")
                         .then()
-                         .log().body()
-                        .extract().as(Location.class)
-                ;
+                        .log().body()
+                        .extract().as(Location.class);
         System.out.println(location);
         System.out.println(location.getCountry());
         System.out.println(location.getPlaces());

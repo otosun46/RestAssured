@@ -6,8 +6,11 @@ import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import pojo.Task06;
+import pojo.Task06_Pojo;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static io.restassured.RestAssured.*;
@@ -149,15 +152,25 @@ public class TaskSolution {
      */
     @Test
     public void task7() {
+        Task06_Pojo task06_pojo=new Task06_Pojo();
+        Task06 task06=new Task06();
+        List<Task06_Pojo>liste=new ArrayList<>();
+        for (int i = 0; i <200 ; i++) {
+        liste.add(
         given()
                 .when()
-                .get("https://jsonplaceholder.typicode.com/todos")
+                .get("https://jsonplaceholder.typicode.com/todos/"+i)
                 .then()
-                .log().body()
-                .statusCode(200)
-                .contentType(ContentType.JSON)
+               // .log().body()
+               // .statusCode(200)
+                .extract().as(Task06_Pojo.class))
         ;
+        }
+        task06.setTask06_pojos(liste);
+        System.out.println(task06);
     }
+
+
     /** Task 8
      * create a request to https://jsonplaceholder.typicode.com/todos
      * expect status 200
@@ -175,6 +188,5 @@ public class TaskSolution {
                 .contentType(ContentType.JSON)
                 .extract().path("");
         System.out.println(liste);
-        ;
     }
 }
