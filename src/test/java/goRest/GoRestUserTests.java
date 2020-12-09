@@ -101,8 +101,18 @@ public class GoRestUserTests {
                 .statusCode(200)
                 .body("code",equalTo(204))
         ;
+    }
 
-
-
+    @Test (dependsOnMethods = "createUser",priority = 1)
+    public void deleteUserByIdNegative(){
+        given()
+                .header("Authorization", "Bearer 04610a7e22f479adbcf2d70d5f61babda270b70b86318c203a6e7ac1e7ce1ee3")
+                .pathParam("userId", userId)
+                .when()
+                .delete("https://gorest.co.in/public-api/users/{userId}")
+                .then()
+                .statusCode(200)
+                .body("code",equalTo(404))
+        ;
     }
 }
