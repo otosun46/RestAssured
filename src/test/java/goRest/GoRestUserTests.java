@@ -5,6 +5,7 @@ package goRest;
 
 import goRest.Model.User;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.annotations.Test;
 
@@ -114,5 +115,28 @@ public class GoRestUserTests {
                 .statusCode(200)
                 .body("code",equalTo(404))
         ;
+    }
+
+    @Test
+    public void responsSampla(){
+        Response response=
+        given()
+
+                .when()
+                .get("https://gorest.co.in/public-api/users")
+                .then()
+                //.log().body()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .extract().response()
+                ;
+        User user2=response.jsonPath().getObject("data[1]",User.class);
+        List<User> userList=response.jsonPath().getList("data",User.class);
+        int total= response.jsonPath().getInt("meta.pagination.total");
+        int code= response.jsonPath().getInt("code");
+        System.out.println(user2);
+        System.out.println(userList.size());
+        System.out.println(total);
+        System.out.println(code);
     }
 }
