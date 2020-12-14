@@ -94,4 +94,53 @@ public class CountryTest {
 
     }
 
+    @Test(dependsOnMethods = "createCountry")
+    public void updateCountry(){
+        Country country=new Country();
+
+        country.setId(id);
+        country.setName(RandomStringUtils.randomAlphabetic(8));
+        country.setCode(RandomStringUtils.randomAlphabetic(2));
+        country.setCode("");
+        given()
+                .cookies(cookies)
+                .body(country)
+                .contentType(ContentType.JSON)
+                .when()
+                .put("/school-service/api/countries")
+                .then()
+                .statusCode(200)
+                .body("name",equalTo(country.getName()))
+                .body("code",equalTo(country.getCode()))
+                ;
+    }
+
+    @Test(dependsOnMethods = "updateCountry")
+    public void deleteById(){
+
+        given()
+                .cookies(cookies)
+                .pathParam("id",id)
+                .when()
+                .delete("/school-service/api/countries/{id}")
+                .then()
+                .statusCode(200)
+                .body(equalTo(""))
+        ;
+    }
+    @Test(dependsOnMethods = "deleteById")
+    public void deleteCountryByIdNegativTest() {
+
+        given()
+                .cookies(cookies)
+                .pathParam("countryId", id)
+                .when()
+                .delete("/school-service/api/countries/{countryId}")
+                .then()
+                .statusCode(404)
+                .body("message", equalTo("Country not found"))
+
+        ;
+    }
+
 }
