@@ -1,0 +1,7 @@
+<suite name="Jetkins Test Suite">
+    <test name= "Main Test">
+        <classes>
+            <class name="Basqar.CountryTest"> </class>
+        </classes>
+    </test>
+</suite>
